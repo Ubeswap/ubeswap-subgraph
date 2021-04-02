@@ -14,7 +14,7 @@ export function getCeloPriceInUSD(): BigDecimal {
   if (!cusdPair) {
     return ZERO_BD
   }
-  return cusdPair.token0Price.times(ONE_BD)
+  return cusdPair.token1Price.times(ONE_BD)
 }
 
 // token where amounts should contribute to tracked volume and liquidity
