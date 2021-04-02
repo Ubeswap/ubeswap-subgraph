@@ -8,13 +8,13 @@ const CUSD_ADDRESS = '0x765DE816845861e75A25fCA122bb6898B8B1282a'
 const CUSD_CELO_PAIR = '0x1E593F1FE7B61c53874B54EC0c59FD0d5eb8621e' // Created at block 5272605
 
 
-export function getEthPriceInUSD(): BigDecimal {
+export function getCeloPriceInUSD(): BigDecimal {
   // fetch celo prices for each stablecoin
   let cusdPair = Pair.load(CUSD_CELO_PAIR) // cusd is token1
   if (!cusdPair) {
     return ZERO_BD
   }
-  return cusdPair.token1Price.times(ONE_BD)
+  return cusdPair.token0Price.times(ONE_BD)
 }
 
 // token where amounts should contribute to tracked volume and liquidity

@@ -34,7 +34,7 @@ import {
 
   ZERO_BD
 } from './helpers'
-import { findUsdPerToken, getEthPriceInUSD, getTrackedLiquidityUSD, getTrackedVolumeUSD } from './pricing'
+import { findUsdPerToken, getCeloPriceInUSD, getTrackedLiquidityUSD, getTrackedVolumeUSD } from './pricing'
 
 function isCompleteMint(mintId: string): boolean {
   return MintEvent.load(mintId).sender !== null // sufficient checks
@@ -246,7 +246,7 @@ export function handleSync(event: Sync): void {
 
   // update CELO price now that reserves could have changed
   let bundle = Bundle.load('1')
-  bundle.celoPrice = getEthPriceInUSD()
+  bundle.celoPrice = getCeloPriceInUSD()
   bundle.save()
 
   token0.derivedCUSD = findUsdPerToken(token0 as Token)
