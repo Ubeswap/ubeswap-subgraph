@@ -114,7 +114,11 @@ export function updateTokenDayData(token: Token, event: EthereumEvent): TokenDay
   tokenDayData.priceUSD = token.derivedCUSD.times(ONE_BD)
   tokenDayData.totalLiquidityToken = token.totalLiquidity
   tokenDayData.totalLiquidityUSD = token.totalLiquidity.times(token.derivedCUSD as BigDecimal)
-  tokenDayData.totalLiquidityCELO = tokenDayData.totalLiquidityUSD.div(bundle.celoPrice)
+  if (bundle.celoPrice.notEqual(ZERO_BD)) {
+    tokenDayData.totalLiquidityCELO = tokenDayData.totalLiquidityUSD.div(bundle.celoPrice)
+  } else {
+    tokenDayData.totalLiquidityCELO = ZERO_BD
+  }
   tokenDayData.dailyTxns = tokenDayData.dailyTxns.plus(ONE_BI)
   tokenDayData.save()
 

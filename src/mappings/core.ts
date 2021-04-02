@@ -269,11 +269,19 @@ export function handleSync(event: Sync): void {
   pair.reserveUSD = pair.reserve0
     .times(token0.derivedCUSD as BigDecimal)
     .plus(pair.reserve1.times(token1.derivedCUSD as BigDecimal))
-  pair.reserveCELO = pair.reserveUSD.div(bundle.celoPrice)
+  if (bundle.celoPrice.notEqual(ZERO_BD)) {
+    pair.reserveCELO = pair.reserveUSD.div(bundle.celoPrice)
+  } else {
+    pair.reserveCELO = ZERO_BD
+  }
 
   // use tracked amounts globally
   ubeswap.totalLiquidityUSD = ubeswap.totalLiquidityUSD.plus(trackedLiquidityUSD)
-  ubeswap.totalLiquidityCELO = ubeswap.totalLiquidityUSD.div(bundle.celoPrice)
+  if (bundle.celoPrice.notEqual(ZERO_BD)) {
+    ubeswap.totalLiquidityCELO = ubeswap.totalLiquidityUSD.div(bundle.celoPrice)
+  } else {
+    ubeswap.totalLiquidityCELO = ZERO_BD
+  }
 
   // now correctly set liquidity amounts for each token
   token0.totalLiquidity = token0.totalLiquidity.plus(pair.reserve0)
