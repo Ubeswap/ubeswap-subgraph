@@ -5,6 +5,7 @@ import { ERC20NameBytes } from '../types/Factory/ERC20NameBytes'
 import { ERC20SymbolBytes } from '../types/Factory/ERC20SymbolBytes'
 import { LiquidityPosition, LiquidityPositionSnapshot, Pair, Token, User } from '../types/schema'
 import { Factory as FactoryContract } from '../types/templates/Pair/Factory'
+import { CELO_ADDRESS } from './pricing'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const FACTORY_ADDRESS = '0x62d5b84bE28a183aBB507E125B384122D2C25fAE'
@@ -55,11 +56,8 @@ export function isNullEthValue(value: string): boolean {
 
 export function fetchTokenSymbol(tokenAddress: Address): string {
   // hard coded overrides
-  if (tokenAddress.toHexString() == '0xe0b7927c4af23765cb51314a0e0521a9645f0e2a') {
-    return 'DGD'
-  }
-  if (tokenAddress.toHexString() == '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
-    return 'AAVE'
+  if (tokenAddress.toHexString() == CELO_ADDRESS) {
+    return 'CELO'
   }
 
   let contract = ERC20.bind(tokenAddress)
@@ -84,6 +82,11 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
 }
 
 export function fetchTokenName(tokenAddress: Address): string {
+  // hard coded overrides
+  if (tokenAddress.toHexString() == CELO_ADDRESS) {
+    return 'Celo Native Asset'
+  }
+
   let contract = ERC20.bind(tokenAddress)
   let contractNameBytes = ERC20NameBytes.bind(tokenAddress)
 

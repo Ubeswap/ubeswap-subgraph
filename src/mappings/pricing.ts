@@ -3,7 +3,7 @@ import { Address, BigDecimal, BigInt } from '@graphprotocol/graph-ts/index'
 import { Pair, Token } from '../types/schema'
 import { ADDRESS_ZERO, factoryContract, ONE_BD, ZERO_BD } from './helpers'
 
-const CELO_ADDRESS = '0x471ece3750da237f93b8e339c536989b8978a438'
+export const CELO_ADDRESS = '0x471ece3750da237f93b8e339c536989b8978a438'
 const CUSD_ADDRESS = '0x765de816845861e75a25fca122bb6898b8b1282a'
 const CUSD_CELO_PAIR = '0x1e593f1fe7b61c53874b54ec0c59fd0d5eb8621e' // Created at block 5272605
 
