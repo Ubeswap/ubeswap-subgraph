@@ -2,8 +2,8 @@ specVersion: 0.0.2
 description: Ubeswap is a decentralized protocol for automated token exchange on Celo.
 repository: https://github.com/Ubeswap/ubeswap-subgraph
 graft:
-  base: QmeZ1vuaUPiS4k9eeuUBdQRCMdziTQw47yEwVua8VpCnq1
-  block: 8686300 # Block number
+  base: QmefHPRbbuAUTNTmhZyYgaN3zgHELmXLPanmRxCmMeucxq
+  block: 8700000 # Block number
 schema:
   file: ./schema.graphql
 dataSources:

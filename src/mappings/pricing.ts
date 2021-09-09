@@ -50,6 +50,9 @@ export function findUsdPerToken(token: Token): BigDecimal {
   ) {
     return ONE_BD;
   }
+  if (token.id === MCELO_ADDRESS) {
+    return findUsdPerToken(Token.load(CELO_ADDRESS) as Token);
+  }
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
     let pairLookup = PairLookup.load(token.id.concat("-").concat(WHITELIST[i]));
