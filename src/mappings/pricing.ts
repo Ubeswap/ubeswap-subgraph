@@ -4,6 +4,7 @@ import { Pair, Token, PairLookup } from "../types/schema";
 import { ADDRESS_ZERO, factoryContract, ONE_BD, ZERO_BD } from "./helpers";
 
 const CUSD_CELO_PAIR = "0x1e593f1fe7b61c53874b54ec0c59fd0d5eb8621e"; // Created at block 5272605
+const MCUSD_MCEUR_PAIR = "0x27616d3dba43f55279726c422daf644bc60128a8";
 export const CELO_ADDRESS = "0x471ece3750da237f93b8e339c536989b8978a438";
 const MCELO_ADDRESS = "0x7037f7296b2fc7908de7b57a89efaa8319f0c500";
 const MCUSD_ADDRESS = "0x64defa3544c695db8c535d289d843a189aa26b98";
@@ -21,13 +22,22 @@ export function getCeloPriceInUSD(): BigDecimal {
   return cusdPair.token1Price.times(ONE_BD);
 }
 
+export function getCeurPriceInUSD(): BigDecimal {
+  // fetch celo prices for each stablecoin
+  let cusdPair = Pair.load(MCUSD_MCEUR_PAIR); // cusd is token1
+  if (!cusdPair) {
+    return ZERO_BD;
+  }
+  return cusdPair.token0Price.times(ONE_BD);
+}
+
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
   CELO_ADDRESS,
   CUSD_ADDRESS,
+  CEUR_ADDRESS,
   MCELO_ADDRESS,
   MCUSD_ADDRESS,
-  CEUR_ADDRESS,
   MCEUR_ADDRESS,
   UBE_ADDRESS,
 ];
@@ -46,13 +56,15 @@ export function findUsdPerToken(token: Token): BigDecimal {
   if (
     token.id == CUSD_ADDRESS ||
     // hard-code moola to $1
-    token.id === MCUSD_ADDRESS
+    token.id == MCUSD_ADDRESS
   ) {
     return ONE_BD;
+  } else if (token.id == CELO_ADDRESS || token.id == MCELO_ADDRESS) {
+    return getCeloPriceInUSD();
+  } else if (token.id == CEUR_ADDRESS || token.id == MCEUR_ADDRESS) {
+    return getCeurPriceInUSD();
   }
-  if (token.id === MCELO_ADDRESS) {
-    return findUsdPerToken(Token.load(CELO_ADDRESS) as Token);
-  }
+
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
     let pairLookup = PairLookup.load(token.id.concat("-").concat(WHITELIST[i]));
