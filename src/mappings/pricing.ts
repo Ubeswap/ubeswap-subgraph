@@ -4,11 +4,14 @@ import { Pair, Token, PairLookup } from "../types/schema";
 import { ADDRESS_ZERO, factoryContract, ONE_BD, ZERO_BD } from "./helpers";
 
 const CUSD_CELO_PAIR = "0x1e593f1fe7b61c53874b54ec0c59fd0d5eb8621e"; // Created at block 5272605
-const MCUSD_MCEUR_PAIR = "0x27616d3dba43f55279726c422daf644bc60128a8";
+const MCUSD2_MCEUR2_PAIR = "0xf94fea0c87d2b357dc72b743b45a8cb682b0716e";
 export const CELO_ADDRESS = "0x471ece3750da237f93b8e339c536989b8978a438";
-const MCELO_ADDRESS = "0x7037f7296b2fc7908de7b57a89efaa8319f0c500";
-const MCUSD_ADDRESS = "0x64defa3544c695db8c535d289d843a189aa26b98";
-const MCEUR_ADDRESS = "0xa8d0e6799ff3fd19c6459bf02689ae09c4d78ba7";
+const MCELO1_ADDRESS = "0x7037f7296b2fc7908de7b57a89efaa8319f0c500";
+const MCELO2_ADDRESS = "0x7d00cd74ff385c955ea3d79e47bf06bd7386387d";
+const MCUSD1_ADDRESS = "0x64defa3544c695db8c535d289d843a189aa26b98";
+const MCUSD2_ADDRESS = "0x918146359264c492bd6934071c6bd31c854edbc3";
+const MCEUR1_ADDRESS = "0xa8d0e6799ff3fd19c6459bf02689ae09c4d78ba7";
+const MCEUR2_ADDRESS = "0xe273ad7ee11dcfaa87383ad5977ee1504ac07568";
 const UBE_ADDRESS = "0x00be915b9dcf56a3cbe739d9b9c202ca692409ec";
 const CUSD_ADDRESS = "0x765de816845861e75a25fca122bb6898b8b1282a";
 const CEUR_ADDRESS = "0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73";
@@ -24,7 +27,7 @@ export function getCeloPriceInUSD(): BigDecimal {
 
 export function getCeurPriceInUSD(): BigDecimal {
   // fetch celo prices for each stablecoin
-  let cusdPair = Pair.load(MCUSD_MCEUR_PAIR); // cusd is token1
+  let cusdPair = Pair.load(MCUSD2_MCEUR2_PAIR); // cusd is token1
   if (!cusdPair) {
     return ZERO_BD;
   }
@@ -36,9 +39,12 @@ let WHITELIST: string[] = [
   CELO_ADDRESS,
   CUSD_ADDRESS,
   CEUR_ADDRESS,
-  MCELO_ADDRESS,
-  MCUSD_ADDRESS,
-  MCEUR_ADDRESS,
+  MCELO1_ADDRESS,
+  MCELO2_ADDRESS,
+  MCUSD1_ADDRESS,
+  MCUSD2_ADDRESS,
+  MCEUR1_ADDRESS,
+  MCEUR2_ADDRESS,
   UBE_ADDRESS,
 ];
 
@@ -56,12 +62,21 @@ export function findUsdPerToken(token: Token): BigDecimal {
   if (
     token.id == CUSD_ADDRESS ||
     // hard-code moola to $1
-    token.id == MCUSD_ADDRESS
+    token.id == MCUSD1_ADDRESS ||
+    token.id == MCUSD2_ADDRESS
   ) {
     return ONE_BD;
-  } else if (token.id == CELO_ADDRESS || token.id == MCELO_ADDRESS) {
+  } else if (
+    token.id == CELO_ADDRESS ||
+    token.id == MCELO1_ADDRESS ||
+    token.id == MCELO2_ADDRESS
+  ) {
     return getCeloPriceInUSD();
-  } else if (token.id == CEUR_ADDRESS || token.id == MCEUR_ADDRESS) {
+  } else if (
+    token.id == CEUR_ADDRESS ||
+    token.id == MCEUR1_ADDRESS ||
+    token.id == MCEUR2_ADDRESS
+  ) {
     return getCeurPriceInUSD();
   }
 
